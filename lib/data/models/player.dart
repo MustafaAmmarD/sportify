@@ -20,12 +20,12 @@ class CareerEntry {
   factory CareerEntry.fromJson(Map<String, dynamic> json) {
     return CareerEntry(
       club: json['club'] as String,
-      league: json['league'] as String,
-      country: json['country'] as String,
-      period: json['period'] as String,
-      appearances: json['appearances'] as int,
-      goals: json['goals'] as int,
-      assists: json['assists'] as int,
+      league: json['league'] as String? ?? 'Unknown',
+      country: json['country'] as String? ?? 'Unknown',
+      period: json['period'] as String? ?? json['season'] as String? ?? 'Unknown',
+      appearances: json['appearances'] as int? ?? 0,
+      goals: json['goals'] as int? ?? 0,
+      assists: json['assists'] as int? ?? 0,
     );
   }
 
@@ -194,8 +194,8 @@ class Player {
     return Player(
       id: json['id'] as String,
       name: json['name'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      firstName: json['firstName'] as String? ?? (json['name'] as String).split(' ').first,
+      lastName: json['lastName'] as String? ?? (json['name'] as String).split(' ').last,
       position: json['position'] as String,
       nationality: json['nationality'] as String,
       age: json['age'] as int,
