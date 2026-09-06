@@ -106,28 +106,53 @@ class DiscoverScreen extends ConsumerWidget {
 
           // ── Player Grid ──
           allPlayers.when(
-            data: (players) => SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 14,
-                  mainAxisSpacing: 14,
-                  childAspectRatio: 0.72,
+            data: (players) {
+              if (players.isEmpty) {
+                return SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.search_off, size: 64, color: AppColors.textMuted),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No players found',
+                          style: AppTextStyles.headlineMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Try adjusting your search criteria.',
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 14,
+                    mainAxisSpacing: 14,
+                    childAspectRatio: 0.72,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return PlayerCard(
+                        player: players[index],
+                        onTap: () {
+                          context.push('/player/${players[index].id}');
+                        },
+                      );
+                    },
+                    childCount: players.length,
+                  ),
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return PlayerCard(
-                      player: players[index],
-                      onTap: () {
-                        context.push('/player/${players[index].id}');
-                      },
-                    );
-                  },
-                  childCount: players.length,
-                ),
-              ),
-            ),
+              );
+            },
             loading: () => const SliverFillRemaining(
               child: Center(
                 child: CircularProgressIndicator(color: AppColors.primary),

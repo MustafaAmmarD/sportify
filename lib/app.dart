@@ -29,15 +29,13 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) => const MainShell(),
-      routes: [
-        GoRoute(
-          path: 'player/:id',
-          builder: (context, state) {
-            final playerId = state.pathParameters['id']!;
-            return PlayerProfileScreen(playerId: playerId);
-          },
-        ),
-      ],
+    ),
+    GoRoute(
+      path: '/player/:id',
+      builder: (context, state) {
+        final playerId = state.pathParameters['id']!;
+        return PlayerProfileScreen(playerId: playerId);
+      },
     ),
   ],
 );
