@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/main_shell.dart';
 import 'screens/player_profile/player_profile_screen.dart';
+import 'screens/splash/splash_screen.dart';
 
 class SportifyApp extends StatelessWidget {
   const SportifyApp({super.key});
@@ -19,10 +20,14 @@ class SportifyApp extends StatelessWidget {
 }
 
 final GoRouter _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
     GoRoute(
-      path: '/',
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/home',
       builder: (context, state) => const MainShell(),
       routes: [
         GoRoute(
