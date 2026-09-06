@@ -6,6 +6,7 @@ import '../../providers/providers.dart';
 import '../../widgets/ai_score_indicator.dart';
 import '../../widgets/career_timeline.dart';
 import '../../widgets/why_this_player.dart';
+import '../../widgets/app_image.dart';
 
 import 'widgets/profile_hero_header.dart';
 import 'widgets/player_info_grid.dart';
@@ -229,58 +230,94 @@ class PlayerProfileScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 12),
-        Container(
-          height: 200,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.primaryMuted.withValues(alpha: 0.3),
-                AppColors.surfaceLight,
-              ],
-            ),
-          ),
-          child: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.play_arrow_rounded,
-                        color: AppColors.primary,
-                        size: 36,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '${player.name} — Best Moments',
-                      style: AppTextStyles.labelLarge,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Season 2024/25 Highlights',
-                      style: AppTextStyles.bodySmall,
-                    ),
-                  ],
+        GestureDetector(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Video playback is a placeholder for this prototype'),
+                backgroundColor: AppColors.surfaceLight,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
+            );
+          },
+          child: Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceLight,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Stack(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: AppImage(imageUrl: player.imageUrl),
+                  ),
+                  // Dark overlay for contrast
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    color: Colors.black.withValues(alpha: 0.5),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.9),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 12,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.black87,
+                            size: 36,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          '${player.name} — Best Moments',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: Colors.white,
+                            shadows: [
+                              const Shadow(
+                                blurRadius: 4,
+                                color: Colors.black87,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Season 2024/25 Highlights',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Colors.white70,
+                            shadows: [
+                              const Shadow(
+                                blurRadius: 4,
+                                color: Colors.black87,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               Positioned(
                 bottom: 12,
                 right: 12,
@@ -304,7 +341,8 @@ class PlayerProfileScreen extends ConsumerWidget {
             ],
           ),
         ),
-      ],
+      ),
+    ],
     );
   }
 

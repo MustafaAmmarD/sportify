@@ -68,7 +68,16 @@ class HighlightReelsSliver extends ConsumerWidget {
                   return HighlightCard(
                     player: players[index],
                     onTap: () {
-                      context.push('/player/${players[index].id}');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('Video playback is a placeholder for this prototype'),
+                          backgroundColor: AppColors.surfaceLight,
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      );
                     },
                   );
                 },

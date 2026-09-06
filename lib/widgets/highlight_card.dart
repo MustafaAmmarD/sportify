@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
 import '../data/models/player.dart';
+import 'app_image.dart';
 
 class HighlightCard extends StatefulWidget {
   final Player player;
@@ -48,48 +49,39 @@ class _HighlightCardState extends State<HighlightCard> {
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
                 child: Stack(
                   children: [
+                    SizedBox(
+                      height: 110,
+                      width: double.infinity,
+                      child: AppImage(imageUrl: widget.player.imageUrl),
+                    ),
+                    // Dark overlay for contrast
                     Container(
                       height: 110,
                       width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primaryMuted,
-                            AppColors.surfaceLight,
-                          ],
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.sports_soccer,
-                        size: 40,
-                        color: AppColors.primary.withValues(alpha: 0.3),
-                      ),
+                      color: Colors.black.withValues(alpha: 0.4),
                     ),
                     // Play button overlay
                     Positioned.fill(
                       child: Center(
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          width: 44,
-                          height: 44,
+                          width: _isHovered ? 48 : 44,
+                          height: _isHovered ? 48 : 44,
                           decoration: BoxDecoration(
-                            color: _isHovered
-                                ? AppColors.primary
-                                : AppColors.primary.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: _isHovered ? 0.95 : 0.8),
                             shape: BoxShape.circle,
                             boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.4),
-                                blurRadius: _isHovered ? 16 : 8,
-                              ),
+                              if (_isHovered)
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 8,
+                                ),
                             ],
                           ),
                           child: const Icon(
                             Icons.play_arrow_rounded,
-                            color: AppColors.background,
-                            size: 24,
+                            color: Colors.black87,
+                            size: 28,
                           ),
                         ),
                       ),

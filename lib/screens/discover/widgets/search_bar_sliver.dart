@@ -16,9 +16,18 @@ class SearchBarSliver extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.surfaceLight,
+            color: AppColors.cardHover,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(
+              color: AppColors.textMuted.withValues(alpha: 0.3),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: TextField(
             onChanged: (value) {
