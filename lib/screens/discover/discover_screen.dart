@@ -6,8 +6,10 @@ import '../../core/theme/app_text_styles.dart';
 import '../../providers/providers.dart';
 import '../../widgets/sportify_logo.dart';
 import '../../widgets/player_card.dart';
-import '../../widgets/featured_player_card.dart';
-import '../../widgets/highlight_card.dart';
+
+import 'widgets/search_bar_sliver.dart';
+import 'widgets/featured_players_sliver.dart';
+import 'widgets/highlight_reels_sliver.dart';
 
 class DiscoverScreen extends ConsumerWidget {
   const DiscoverScreen({super.key});
@@ -15,7 +17,6 @@ class DiscoverScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allPlayers = ref.watch(searchResultsProvider);
-    final featuredPlayers = ref.watch(featuredPlayersProvider);
     final searchQuery = ref.watch(searchQueryProvider);
     final screenWidth = MediaQuery.of(context).size.width;
     final isWide = screenWidth > 900;
@@ -51,60 +52,7 @@ class DiscoverScreen extends ConsumerWidget {
           ),
 
           // ── Search Bar ──
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surfaceLight,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: TextField(
-                  onChanged: (value) {
-                    ref.read(searchQueryProvider.notifier).update(value);
-                  },
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Search players, positions, clubs...',
-                    hintStyle: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textHint,
-                    ),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: AppColors.textMuted,
-                      size: 22,
-                    ),
-                    suffixIcon: searchQuery.isNotEmpty
-                        ? IconButton(
-                            onPressed: () {
-                              ref.read(searchQueryProvider.notifier).update('');
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              color: AppColors.textMuted,
-                              size: 20,
-                            ),
-                          )
-                        : const Icon(
-                            Icons.tune,
-                            color: AppColors.textMuted,
-                            size: 20,
-                          ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          const SearchBarSliver(),
 
           // Show search results if searching
           if (searchQuery.isNotEmpty) ...[
@@ -121,144 +69,10 @@ class DiscoverScreen extends ConsumerWidget {
             ),
           ],
 
-          // ── Featured Players Section ──
+          // ── Featured & Highlights ──
           if (searchQuery.isEmpty) ...[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Featured Players',
-                          style: AppTextStyles.headlineMedium,
-                        ),
-                      ],
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'View All',
-                        style: AppTextStyles.labelMedium.copyWith(
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Featured players carousel
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 260,
-                child: featuredPlayers.when(
-                  data: (players) => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: players.length,
-                    itemBuilder: (context, index) {
-                      return FeaturedPlayerCard(
-                        player: players[index],
-                        onTap: () {
-                          context.push('/player/${players[index].id}');
-                        },
-                      );
-                    },
-                  ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
-                  ),
-                  error: (e, _) => Center(
-                    child: Text('Error loading featured players',
-                        style: AppTextStyles.bodyMedium),
-                  ),
-                ),
-              ),
-            ),
-
-            // ── Highlight Videos Section ──
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: AppColors.accent,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      'Highlight Reels',
-                      style: AppTextStyles.headlineMedium,
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        'NEW',
-                        style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.accent,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 9,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 180,
-                child: allPlayers.when(
-                  data: (players) => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    itemCount: players.length > 6 ? 6 : players.length,
-                    itemBuilder: (context, index) {
-                      return HighlightCard(
-                        player: players[index],
-                        onTap: () {
-                          context.push('/player/${players[index].id}');
-                        },
-                      );
-                    },
-                  ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
-                  ),
-                  error: (e, _) => Center(
-                    child: Text('Error loading highlights',
-                        style: AppTextStyles.bodyMedium),
-                  ),
-                ),
-              ),
-            ),
+            const FeaturedPlayersSliver(),
+            const HighlightReelsSliver(),
 
             // ── All Players Section Header ──
             SliverToBoxAdapter(
