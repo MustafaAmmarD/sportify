@@ -627,3 +627,34 @@ final List<Map<String, dynamic>> mockPlayersJson = [
     }
   },
 ];
+
+class MockPlayers {
+  static List<Player> getAllPlayers() {
+    return mockPlayersJson.map((json) => Player.fromJson(json)).toList();
+  }
+
+  static List<Player> getFeaturedPlayers() {
+    final players = getAllPlayers();
+    return players.where((p) => p.aiFitScore >= 0.85).take(4).toList();
+  }
+
+  static Player? getPlayerById(String id) {
+    try {
+      return getAllPlayers().firstWhere((p) => p.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static List<Player> searchPlayers(String query) {
+    final players = getAllPlayers();
+    final lowerQuery = query.toLowerCase();
+    return players.where((p) {
+      return p.name.toLowerCase().contains(lowerQuery) ||
+          p.position.toLowerCase().contains(lowerQuery) ||
+          p.nationality.toLowerCase().contains(lowerQuery) ||
+          p.currentClub.toLowerCase().contains(lowerQuery);
+    }).toList();
+  }
+}
+
