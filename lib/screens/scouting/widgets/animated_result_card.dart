@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '../../../widgets/app_image.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../data/models/player.dart';
@@ -152,23 +152,10 @@ class _AnimatedResultCardState extends State<AnimatedResultCard>
                   // Player photo
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
+                    child: AppImage(
                       imageUrl: widget.player.imageUrl,
                       width: 50,
                       height: 50,
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(
-                        width: 50,
-                        height: 50,
-                        color: AppColors.surfaceLight,
-                      ),
-                      errorWidget: (_, __, ___) => Container(
-                        width: 50,
-                        height: 50,
-                        color: AppColors.surfaceLight,
-                        child: const Icon(Icons.person,
-                            size: 24, color: AppColors.textMuted),
-                      ),
                     ),
                   ),
                   const SizedBox(width: 14),

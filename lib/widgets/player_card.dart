@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'app_image.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_text_styles.dart';
 import '../data/models/player.dart';
@@ -55,26 +55,8 @@ class _PlayerCardState extends State<PlayerCard> {
                   children: [
                     AspectRatio(
                       aspectRatio: 4 / 3,
-                      child: CachedNetworkImage(
+                      child: AppImage(
                         imageUrl: widget.player.imageUrl,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          color: AppColors.surfaceLight,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Container(
-                          color: AppColors.surfaceLight,
-                          child: const Icon(
-                            Icons.person,
-                            size: 48,
-                            color: AppColors.textMuted,
-                          ),
-                        ),
                       ),
                     ),
                     // Gradient overlay

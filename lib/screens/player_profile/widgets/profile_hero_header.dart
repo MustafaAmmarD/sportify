@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '../../../widgets/app_image.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../widgets/availability_badge.dart';
@@ -62,17 +62,8 @@ class ProfileHeroHeader extends StatelessWidget {
         background: Stack(
           fit: StackFit.expand,
           children: [
-            CachedNetworkImage(
+            AppImage(
               imageUrl: player.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: AppColors.surfaceLight,
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: AppColors.surfaceLight,
-                child: const Icon(Icons.person,
-                    size: 80, color: AppColors.textMuted),
-              ),
             ),
             // Gradient overlay
             Container(
