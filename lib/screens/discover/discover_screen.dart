@@ -41,25 +41,6 @@ class DiscoverScreen extends ConsumerWidget {
             surfaceTintColor: Colors.transparent,
             toolbarHeight: 72,
             title: const SportifyLogo(fontSize: 24, showTagline: false),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('You have 3 new scouting alerts!'),
-                      backgroundColor: AppColors.primary,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.notifications_outlined,
-                    color: AppColors.textSecondary),
-              ),
-              const SizedBox(width: 8),
-            ],
           ),
 
           // ── Search Bar ──

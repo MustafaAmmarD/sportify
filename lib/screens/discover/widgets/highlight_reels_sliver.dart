@@ -29,23 +29,9 @@ class HighlightReelsSliver extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Opening highlight reels...'),
-                        backgroundColor: AppColors.surfaceLight,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'Highlight Reels',
-                    style: AppTextStyles.headlineMedium,
-                  ),
+                Text(
+                  'Highlight Reels',
+                  style: AppTextStyles.headlineMedium,
                 ),
                 const SizedBox(width: 8),
                 Container(

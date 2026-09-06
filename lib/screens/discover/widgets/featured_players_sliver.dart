@@ -38,26 +38,6 @@ class FeaturedPlayersSliver extends ConsumerWidget {
                     ),
                   ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Loading full featured players list...'),
-                        backgroundColor: AppColors.surfaceLight,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'View All',
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
