@@ -1,0 +1,200 @@
+# Sportify — Updated Implementation Plan
+
+## Goal
+Build a **fully polished** Flutter prototype of the Sportify football talent discovery app — every screen complete, every widget functional, zero placeholders.
+
+---
+
+## Screens (7+ Screens)
+
+| # | Screen | Description |
+|---|--------|-------------|
+| 1 | **Splash Screen** | Animated Sportify logo + tagline, auto-navigates to Home |
+| 2 | **Discover / Home** | Branding, featured players carousel, player cards grid (photo, name, position, nationality, availability, AI Fit Score), highlight video cards, search field |
+| 3 | **Player Profile** | Full profile: photo, name, position, nationality, age, height, preferred foot, availability, biography, career history, goals/assists/appearances, highlight video placeholder, AI Fit Score, "Why this player?" section |
+| 4 | **AI Club Scouting** | Position selector, age range slider, preferred foot, budget slider, ranked player results with match percentages |
+| 5 | **Search / Explore** | Full search with filters by position, nationality, availability — live filtering results |
+| 6 | **Favorites / Shortlist** | Save and manage shortlisted players |
+| 7 | **Highlight Videos** | Grid/list of video highlight cards with player info |
+
+> [!IMPORTANT]
+> All screens will be **fully implemented** with real UI, data, interactions, and animations. No empty stubs.
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    A[main.dart] --> B[App with Riverpod ProviderScope]
+    B --> C[GoRouter Navigation]
+    
+    C --> S[Splash Screen]
+    C --> D[Main Shell - Bottom Nav]
+    C --> PP[Player Profile]
+    
+    D --> D1[Discover Tab]
+    D --> D2[Scouting Tab]
+    D --> D3[Highlights Tab]
+    D --> D4[Favorites Tab]
+    
+    subgraph Data Layer
+        R[PlayerRepository] --> MS[MockApiService]
+        MS --> MD[Mock JSON Data]
+    end
+    
+    subgraph State - Riverpod
+        P1[playersProvider]
+        P2[playerDetailProvider]
+        P3[scoutingProvider]
+        P4[favoritesProvider]
+        P5[searchProvider]
+    end
+    
+    D1 --> P1
+    PP --> P2
+    D2 --> P3
+    D4 --> P4
+    D1 --> P5
+```
+
+### Project Structure
+```
+sportify/
+├── lib/
+│   ├── main.dart                          # Entry point with ProviderScope
+│   ├── app.dart                           # MaterialApp + GoRouter setup
+│   ├── core/
+│   │   ├── theme/
+│   │   │   ├── app_theme.dart             # Full dark football theme
+│   │   │   ├── app_colors.dart            # Color palette
+│   │   │   └── app_text_styles.dart       # Typography system
+│   │   └── constants/
+│   │       └── app_constants.dart         # App-wide constants
+│   ├── data/
+│   │   ├── models/
+│   │   │   ├── player.dart                # Player data model
+│   │   │   ├── career_entry.dart          # Career history entry
+│   │   │   ├── player_stats.dart          # Goals/assists/appearances
+│   │   │   └── scouting_filter.dart       # Scouting filter model
+│   │   ├── mock/
+│   │   │   └── mock_players.dart          # 10+ realistic players with full data
+│   │   └── repositories/
+│   │       └── player_repository.dart     # Abstract + Mock implementation
+│   ├── providers/
+│   │   ├── discover_provider.dart         # Home screen state
+│   │   ├── player_detail_provider.dart    # Player profile state
+│   │   ├── scouting_provider.dart         # AI scouting filters + results
+│   │   ├── favorites_provider.dart        # Shortlist management
+│   │   └── search_provider.dart           # Search + filter state
+│   ├── screens/
+│   │   ├── splash/
+│   │   │   └── splash_screen.dart         # Animated splash
+│   │   ├── main_shell.dart                # Bottom nav shell
+│   │   ├── discover/
+│   │   │   └── discover_screen.dart       # Full home screen
+│   │   ├── player_profile/
+│   │   │   └── player_profile_screen.dart # Full player detail
+│   │   ├── scouting/
+│   │   │   └── scouting_screen.dart       # AI scouting with filters
+│   │   ├── highlights/
+│   │   │   └── highlights_screen.dart     # Video highlights grid
+│   │   ├── favorites/
+│   │   │   └── favorites_screen.dart      # Shortlisted players
+│   │   └── search/
+│   │       └── search_screen.dart         # Search with live filtering
+│   └── widgets/
+│       ├── player_card.dart               # Reusable player card
+│       ├── featured_player_card.dart      # Large featured card
+│       ├── stat_badge.dart                # Stat display (goals/assists)
+│       ├── ai_score_indicator.dart        # Animated circular AI score
+│       ├── highlight_card.dart            # Video highlight card
+│       ├── career_timeline.dart           # Career history widget
+│       ├── why_this_player.dart           # AI reasoning breakdown
+│       ├── custom_search_bar.dart         # Search bar widget
+│       ├── filter_chip_row.dart           # Position/nationality chips
+│       ├── availability_badge.dart        # Available/Not available badge
+│       └── sportify_logo.dart             # Branding widget
+├── pubspec.yaml
+└── README.md
+```
+
+---
+
+## Technical Decisions
+
+| Decision | Choice | Why |
+|---|---|---|
+| **State Management** | **Riverpod 2.x** | Modern, compile-safe, better testability — shows strong Flutter knowledge |
+| **Navigation** | **GoRouter** | Declarative, web-friendly deep linking URLs, shell routes for bottom nav |
+| **Data Layer** | **Repository pattern + Mock API Service** | Clean separation — swap mock with Laravel REST in the future |
+| **Design** | **Dark theme + Emerald green + Gold** | Professional football aesthetic (pitch green + trophy gold) |
+| **Fonts** | **Google Fonts (Outfit + Inter)** | Modern, clean, sporty typography |
+| **Animations** | **flutter_animate + Hero** | Smooth transitions, micro-interactions |
+| **Deployment** | **Flutter Web → GitHub Pages** | Free hosting, works with GitHub repo |
+
+---
+
+## Design Direction
+
+- **Background**: Deep dark (#0A0E14, #131920)
+- **Cards**: Glassmorphic dark cards with subtle borders (#1A2030)
+- **Primary**: Emerald green (#00E676) — football pitch inspired
+- **Accent**: Gold (#FFD54F) — for AI scores and highlights
+- **Text**: White + muted gray hierarchy
+- **Imagery**: Network player photos from free sports image APIs
+- **Feel**: Wyscout meets Nike Football — premium, data-driven, sporty
+
+---
+
+## Mock Data
+10+ realistic football players with:
+- Real-sounding names (multinational)
+- Positions (GK, CB, LB, RB, CM, CDM, CAM, LW, RW, ST)
+- Nationalities (Egyptian, German, Brazilian, French, Nigerian, etc.)
+- Full stats (goals, assists, appearances per season)
+- Career history (multiple clubs)
+- Biographies
+- AI Fit Scores with reasoning
+- Availability status
+
+---
+
+## Deployment Plan
+1. Create GitHub repo `sportify`
+2. Push code
+3. Enable GitHub Pages with Flutter web build
+4. Generate live demo link
+
+---
+
+## Checklist from Task Requirements
+
+- [x] Flutter + Dart
+- [x] Clean, maintainable project structure
+- [x] State management (Riverpod)
+- [x] Well-structured mock API/service layer (Repository pattern)
+- [x] Responsive UI
+- [x] Reusable widgets/components
+- [x] Sportify branding
+- [x] Featured players with all fields
+- [x] Search field
+- [x] Full player profile with all required sections
+- [x] AI Fit Score with reasons breakdown
+- [x] Career history + stats
+- [x] Highlight video placeholder
+- [x] AI Club Scouting with filters (position, age, foot, budget)
+- [x] Ranked player results
+- [x] Dark football aesthetic
+- [x] Modern typography
+- [x] Cards + statistics + clear CTAs
+- [x] Live working demo link
+- [x] GitHub repository
+- [x] README (architecture, state mgmt, API approach, decisions)
+
+---
+
+## Open Questions
+
+1. **What is your GitHub username?** (needed to create the repo and connect)
+2. **Do you want me to use `gh auth login` to authenticate via browser?** (you'll need to click a link to authorize)
