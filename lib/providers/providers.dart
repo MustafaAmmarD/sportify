@@ -20,7 +20,18 @@ final featuredPlayersProvider = FutureProvider<List<Player>>((ref) async {
 });
 
 // ── Search Provider ──
-final searchQueryProvider = StateProvider<String>((ref) => '');
+final searchQueryProvider = NotifierProvider<SearchQueryNotifier, String>(
+  SearchQueryNotifier.new,
+);
+
+class SearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void update(String value) {
+    state = value;
+  }
+}
 
 final searchResultsProvider = FutureProvider<List<Player>>((ref) async {
   final repo = ref.watch(playerRepositoryProvider);
@@ -39,12 +50,14 @@ final playerDetailProvider =
 });
 
 // ── Scouting Providers ──
-final scoutingFilterProvider = StateNotifierProvider<ScoutingFilterNotifier, ScoutingFilter>((ref) {
-  return ScoutingFilterNotifier();
-});
+final scoutingFilterProvider =
+    NotifierProvider<ScoutingFilterNotifier, ScoutingFilter>(
+  ScoutingFilterNotifier.new,
+);
 
-class ScoutingFilterNotifier extends StateNotifier<ScoutingFilter> {
-  ScoutingFilterNotifier() : super(const ScoutingFilter());
+class ScoutingFilterNotifier extends Notifier<ScoutingFilter> {
+  @override
+  ScoutingFilter build() => const ScoutingFilter();
 
   void setPosition(String? position) {
     state = state.copyWith(position: position);
@@ -74,7 +87,26 @@ final scoutingResultsProvider = FutureProvider<List<Player>>((ref) async {
 });
 
 // ── Has the user triggered a scouting search? ──
-final hasSearchedProvider = StateProvider<bool>((ref) => false);
+final hasSearchedProvider = NotifierProvider<HasSearchedNotifier, bool>(
+  HasSearchedNotifier.new,
+);
+
+class HasSearchedNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void searched() => state = true;
+  void reset() => state = false;
+}
 
 // ── Bottom Navigation Index ──
-final bottomNavIndexProvider = StateProvider<int>((ref) => 0);
+final bottomNavIndexProvider = NotifierProvider<BottomNavNotifier, int>(
+  BottomNavNotifier.new,
+);
+
+class BottomNavNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  void setIndex(int index) => state = index;
+}

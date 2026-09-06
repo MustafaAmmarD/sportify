@@ -62,7 +62,7 @@ class DiscoverScreen extends ConsumerWidget {
                 ),
                 child: TextField(
                   onChanged: (value) {
-                    ref.read(searchQueryProvider.notifier).state = value;
+                    ref.read(searchQueryProvider.notifier).update(value);
                   },
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textPrimary,
@@ -80,7 +80,7 @@ class DiscoverScreen extends ConsumerWidget {
                     suffixIcon: searchQuery.isNotEmpty
                         ? IconButton(
                             onPressed: () {
-                              ref.read(searchQueryProvider.notifier).state = '';
+                              ref.read(searchQueryProvider.notifier).update('');
                             },
                             icon: const Icon(
                               Icons.close,
