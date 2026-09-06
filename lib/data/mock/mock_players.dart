@@ -700,7 +700,7 @@ class MockPlayers {
       'imageUrl': 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=400&fit=crop',
       'currentClub': 'Atlético Nacional',
       'marketValue': 4500000,
-      'aiFitScore': 0.88,
+      'aiFitScore': 0.78,
       'aiFitReasons': [
         {
           'category': 'Position Match',
