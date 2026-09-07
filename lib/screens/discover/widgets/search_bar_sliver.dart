@@ -32,6 +32,7 @@ class SearchBarSliver extends ConsumerWidget {
           child: TextField(
             onChanged: (value) {
               ref.read(searchQueryProvider.notifier).update(value);
+              ref.read(debouncedSearchQueryProvider.notifier).update(value);
             },
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textPrimary,
@@ -50,6 +51,7 @@ class SearchBarSliver extends ConsumerWidget {
                   ? IconButton(
                       onPressed: () {
                         ref.read(searchQueryProvider.notifier).update('');
+                        ref.read(debouncedSearchQueryProvider.notifier).update('');
                       },
                       icon: const Icon(
                         Icons.close,

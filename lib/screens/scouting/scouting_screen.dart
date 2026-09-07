@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../providers/providers.dart';
+import '../../data/models/scouting_filter.dart';
 
 import 'widgets/scouting_filters_card.dart';
 import 'widgets/animated_result_card.dart';
@@ -36,6 +37,9 @@ class _ScoutingScreenState extends ConsumerState<ScoutingScreen>
   }
 
   void _runSearch() {
+    final currentFilter = ref.read(scoutingFilterProvider);
+    ref.read(activeScoutingFilterProvider.notifier).update(currentFilter);
+
     setState(() {
       _showResults = true;
     });
@@ -45,6 +49,8 @@ class _ScoutingScreenState extends ConsumerState<ScoutingScreen>
 
   void _resetSearch() {
     ref.read(scoutingFilterProvider.notifier).reset();
+    ref.read(activeScoutingFilterProvider.notifier).update(const ScoutingFilter());
+    
     setState(() {
       _showResults = false;
     });

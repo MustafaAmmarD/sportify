@@ -123,10 +123,28 @@ class _TimelineEntry extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${entry.league} • ${entry.country}',
-                    style: AppTextStyles.bodySmall,
-                  ),
+                  if (entry.league == 'Unknown' && entry.country == 'Unknown')
+                    Text(
+                      'First Team Squad',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textMuted,
+                      ),
+                    )
+                  else if (entry.league == 'Unknown')
+                    Text(
+                      entry.country,
+                      style: AppTextStyles.bodySmall,
+                    )
+                  else if (entry.country == 'Unknown')
+                    Text(
+                      entry.league,
+                      style: AppTextStyles.bodySmall,
+                    )
+                  else
+                    Text(
+                      '${entry.league} • ${entry.country}',
+                      style: AppTextStyles.bodySmall,
+                    ),
                   const SizedBox(height: 10),
                   Row(
                     children: [

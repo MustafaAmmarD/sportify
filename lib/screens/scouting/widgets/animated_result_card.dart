@@ -195,10 +195,13 @@ class _AnimatedResultCardState extends State<AnimatedResultCard>
                               style: const TextStyle(fontSize: 14),
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              widget.player.nationality,
-                              style: AppTextStyles.bodySmall
-                                  .copyWith(fontSize: 12),
+                            Flexible(
+                              child: Text(
+                                widget.player.nationality,
+                                style: AppTextStyles.bodySmall
+                                    .copyWith(fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -211,10 +214,13 @@ class _AnimatedResultCardState extends State<AnimatedResultCard>
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Text(
-                              widget.player.currentClub,
-                              style: AppTextStyles.bodySmall
-                                  .copyWith(fontSize: 11),
+                            Flexible(
+                              child: Text(
+                                widget.player.currentClub,
+                                style: AppTextStyles.bodySmall
+                                    .copyWith(fontSize: 11),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Text(

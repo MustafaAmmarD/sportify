@@ -42,8 +42,26 @@ class AppImage extends StatelessWidget {
           ),
         ),
       );
+    } else if (imageUrl.startsWith('assets/')) {
+      // Flutter asset (works on all platforms)
+      return Image.asset(
+        imageUrl,
+        fit: fit,
+        width: width,
+        height: height,
+        errorBuilder: (context, error, stackTrace) => Container(
+          color: AppColors.surfaceLight,
+          child: const Center(
+            child: Icon(
+              Icons.person,
+              size: 48,
+              color: AppColors.textMuted,
+            ),
+          ),
+        ),
+      );
     } else {
-      // Local web asset (e.g., images/ahmed.jpg)
+      // Fallback: network image for other paths
       return Image.network(
         imageUrl,
         fit: fit,
@@ -63,10 +81,12 @@ class AppImage extends StatelessWidget {
         },
         errorBuilder: (context, error, stackTrace) => Container(
           color: AppColors.surfaceLight,
-          child: const Icon(
-            Icons.person,
-            size: 48,
-            color: AppColors.textMuted,
+          child: const Center(
+            child: Icon(
+              Icons.person,
+              size: 48,
+              color: AppColors.textMuted,
+            ),
           ),
         ),
       );

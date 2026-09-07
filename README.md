@@ -1,46 +1,138 @@
-# Sportify â€” Flutter Football Talent Discovery
+# Sportify — AI-Powered Football Talent Discovery
 
-A functional Flutter prototype of the Sportify football talent discovery app, built for a technical task. It features a dark, professional football aesthetic with 3 main screens: Discover, Player Profile, and AI Club Scouting.
+> A focused prototype of the **Sportify** platform, built as a 24-hour technical assessment. It demonstrates a premium mobile-first UI, clean architecture, and production-ready code structure for an AI football scouting product.
 
-## ðŸ— Architecture
+---
 
-The app follows a clean architecture pattern with a clear separation of concerns, designed to be scalable and maintainable:
+## ?? Live Demo
 
-- **Data Layer:** Contains data models (`Player`, `ScoutingFilter`), a mock data source (`mock_players.dart`), and a repository pattern (`PlayerRepository`) to abstract data access. This makes it trivial to swap the mock data with a real Laravel REST API backend later.
-- **State Layer:** Utilizes Riverpod for dependency injection and state management. The state is decentralized into domain-specific providers (e.g., `scoutingFilterProvider`, `searchResultsProvider`).
-- **Presentation Layer:** Built with a component-based approach using reusable widgets. The navigation is handled by GoRouter with a `ShellRoute` for the bottom navigation bar.
+?? **[Open Live Demo](https://MustafaAmmarD.github.io/sportify)**
 
-## âš™ï¸ State Management
+> Built with Flutter Web and deployed via GitHub Pages.
 
-This project uses **Riverpod 3.x** for state management. Riverpod was chosen because it is modern, compile-safe, testable, and highly recommended for scalable Flutter applications.
+---
 
-- **Notifiers:** `NotifierProvider` is used for states that can change (e.g., search queries, scouting filters).
-- **FutureProviders:** Used for asynchronous data fetching (e.g., loading players). They seamlessly handle loading, error, and data states, allowing the UI to react gracefully without manual `setState` management.
+## ?? Screens
 
-## ðŸ“¡ API / Data Approach
+| Screen | Description |
+|---|---|
+| **Splash** | Animated brand intro with logo and progress indicator |
+| **Discover** | Hero player carousel, Highlight Reels, searchable player grid |
+| **Player Profile** | Full profile with AI Fit Score, career timeline, stats, highlight placeholder |
+| **AI Scouting** | Filter by position, age, foot, budget ? ranked results with AI score |
 
-- **Repository Pattern:** An abstract `PlayerRepository` interface is defined, currently implemented by `MockPlayerRepository`. This mock repository introduces simulated network delays to mimic real-world API behavior.
-- **Mock Data:** Comprehensive mock JSON data is provided for 12 realistic players. The data includes full biographies, career histories, stats, and AI fit score reasoning.
-- **Future Integration:** To connect this to a Laravel backend, you would simply implement a new `ApiPlayerRepository` that implements the `PlayerRepository` interface using the `http` or `dio` package, and swap the provider injection in `providers.dart`.
+---
 
-## ðŸ›  Main Technical Decisions
+## ??? Architecture
 
-1. **Design System:** Implemented a unified dark theme with an emerald green (pitch) and gold (AI/premium) color palette. Used Google Fonts (`Outfit` for headings, `Inter` for body) to give it a modern, sporty feel inspired by apps like Wyscout and Nike Football.
-2. **GoRouter:** Chosen for declarative routing. It supports web URLs nicely (crucial for the live demo) and makes shell routing (bottom navigation) very clean.
-3. **Animations:** Added subtle hover effects, hero animations, and custom animated circular progress indicators (for the AI score) to make the app feel dynamic and premium, avoiding the "generic dashboard" feel.
+The project follows **Feature-First Clean Architecture**:
 
-## ðŸš€ Running Locally
-
-Ensure you have Flutter installed (built and tested on Flutter 3.29+).
-
-```bash
-flutter pub get
-flutter run -d chrome
+```
+lib/
++-- core/               # Theme, colors, text styles, constants
++-- data/               # Models, repository interface & mock implementation
+¦   +-- models/         # Player, CareerEntry, PlayerStats, ScoutingFilter
+¦   +-- mock/           # Static mock player data
+¦   +-- repositories/   # PlayerRepository interface + MockPlayerRepository
++-- providers/          # All Riverpod providers (single source of truth)
++-- screens/            # Feature-first screen folders
+¦   +-- splash/
+¦   +-- discover/
+¦   +-- player_profile/
+¦   +-- scouting/
++-- widgets/            # Shared, reusable UI components
 ```
 
-## ðŸ“ˆ Future Improvements (With Another Week)
+**Key decisions:**
+- Feature-first folder structure keeps each screen self-contained and scalable
+- Repository pattern allows the entire data layer to be swapped without any UI changes
+- GoRouter handles navigation with named routes and deep-linking support
 
-1. **Backend Integration:** Replace the mock repository with a real REST API integration using `dio` and generate data classes with `freezed` and `json_serializable`.
-2. **Video Player Integration:** Replace the highlight video placeholders with an actual video player (e.g., `video_player` or `youtube_player_flutter`) to play reels inline.
-3. **Advanced Animations:** Add page transition animations, stagger list animations upon loading, and more micro-interactions on the buttons and cards.
-4. **Testing:** Write comprehensive unit tests for the notifiers and widget tests for the core reusable components.
+---
+
+## ?? State Management
+
+**Riverpod 3.x** with the modern `Notifier` / `FutureProvider` pattern.
+
+### Performance Optimisations (found via DevTools profiling)
+
+1. **Search Debouncing**: Two-provider pattern — `searchQueryProvider` (instant, drives TextField) and `debouncedSearchQueryProvider` (fires 400ms after typing stops, drives the expensive player list rebuild). Eliminates jank on every keystroke.
+
+2. **Scouting Filter Decoupling**: `scoutingFilterProvider` (live UI state) is separate from `activeScoutingFilterProvider` (committed on "Find Players" tap). Dragging sliders no longer triggers full-screen rebuilds.
+
+---
+
+## ?? API / Data Approach
+
+### Current: Mock Data
+All data is served from static Dart objects in `lib/data/mock/mock_players.dart` — 9 realistic player profiles with full career histories, AI scores, and stats.
+
+### Ready for Laravel Integration
+The repository pattern means connecting to the real backend requires changing **one line**:
+
+```dart
+// In providers.dart — swap mock ? real:
+final playerRepositoryProvider = Provider<PlayerRepository>((ref) {
+  return LaravelPlayerRepository(baseUrl: 'https://api.sportify.com');
+});
+```
+
+`Player.fromJson()` factory constructors are already implemented across all models, ready to parse real API responses.
+
+---
+
+## ??? Main Technical Decisions
+
+| Decision | Rationale |
+|---|---|
+| Flutter cross-platform | Single codebase ? Android, iOS, Web (GitHub Pages) |
+| Slivers for scrolling | `CustomScrollView` + `SliverList` is the highest-performance scroll approach in Flutter |
+| Responsive breakpoints | MediaQuery at >800px switches to a two-column layout — no third-party packages |
+| AppImage widget | Centralises image loading: CachedNetworkImage for remote, Image.asset() for local, graceful error fallback for both |
+| Video placeholder | SnackBar on tap + real player photo with dark overlay mimics a video thumbnail without the complexity/bugs of a real player |
+
+---
+
+## ?? What I Would Improve With One More Week
+
+**High Priority**
+- Real Laravel API integration via `Dio` + repository swap
+- Actual video playback using `video_player` or `better_player`
+- Auth flow (login/signup) with JWT using `flutter_secure_storage`
+
+**Medium Priority**
+- Push notifications (Firebase Cloud Messaging) for player status changes
+- Favourites / Shortlist with local persistence (`Hive`)
+- Skeleton loading screens using `shimmer` package
+- Unit & widget tests using `flutter_test` + `mocktail`
+
+**Polish**
+- Offline support via cached last-fetched data
+- Arabic i18n support (given the target market)
+- More advanced search filters (nationality, league, value range)
+
+---
+
+## ?? Getting Started
+
+```bash
+git clone https://github.com/your-username/sportify.git
+cd sportify
+flutter pub get
+flutter run
+```
+
+**Requirements**: Flutter SDK 3.29+, Dart 3.7+
+
+---
+
+## ?? Key Dependencies
+
+| Package | Purpose |
+|---|---|
+| `flutter_riverpod ^3.3.2` | State management |
+| `go_router ^17.0.0` | Navigation & deep-linking |
+| `cached_network_image ^3.4.1` | Network image caching |
+| `google_fonts ^6.3.2` | Typography |
+| `flutter_animate ^4.5.2` | Micro-animations |
+| `flutter_launcher_icons ^0.13.1` | App icon generation |

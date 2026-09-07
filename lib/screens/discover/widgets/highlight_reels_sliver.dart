@@ -70,8 +70,13 @@ class HighlightReelsSliver extends ConsumerWidget {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: const Text('Video playback is a placeholder for this prototype'),
-                          backgroundColor: AppColors.surfaceLight,
+                          content: Text(
+                            'Video playback is a placeholder for this prototype',
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: AppColors.background,
+                            ),
+                          ),
+                          backgroundColor: AppColors.primary,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

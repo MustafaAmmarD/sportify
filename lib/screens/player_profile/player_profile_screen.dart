@@ -96,7 +96,7 @@ class PlayerProfileScreen extends ConsumerWidget {
               const SizedBox(height: 24),
               CareerTimeline(careerHistory: player.careerHistory),
               const SizedBox(height: 24),
-              _buildHighlightSection(player),
+              _buildHighlightSection(context, player),
             ],
           ),
         ),
@@ -130,7 +130,7 @@ class PlayerProfileScreen extends ConsumerWidget {
         const SizedBox(height: 24),
         CareerTimeline(careerHistory: player.careerHistory),
         const SizedBox(height: 24),
-        _buildHighlightSection(player),
+        _buildHighlightSection(context, player),
         const SizedBox(height: 24),
         WhyThisPlayer(player: player),
         const SizedBox(height: 40),
@@ -217,7 +217,7 @@ class PlayerProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHighlightSection(dynamic player) {
+  Widget _buildHighlightSection(BuildContext context, dynamic player) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -234,8 +234,13 @@ class PlayerProfileScreen extends ConsumerWidget {
           onTap: () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text('Video playback is a placeholder for this prototype'),
-                backgroundColor: AppColors.surfaceLight,
+                content: Text(
+                  'Video playback is a placeholder for this prototype',
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.background,
+                  ),
+                ),
+                backgroundColor: AppColors.primary,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -342,6 +347,7 @@ class PlayerProfileScreen extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     ],
     );
   }

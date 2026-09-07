@@ -10,7 +10,7 @@ class ScoutingFilter {
     this.minAge = 16,
     this.maxAge = 40,
     this.preferredFoot,
-    this.maxBudget = 100,
+    this.maxBudget = 200,
   });
 
   ScoutingFilter copyWith({

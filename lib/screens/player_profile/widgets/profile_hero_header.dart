@@ -33,30 +33,6 @@ class ProfileHeroHeader extends StatelessWidget {
         ),
       ),
       actions: [
-        Container(
-          margin: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.background.withValues(alpha: 0.7),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.share_outlined,
-                size: 18, color: AppColors.textPrimary),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
-          decoration: BoxDecoration(
-            color: AppColors.background.withValues(alpha: 0.7),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.bookmark_outline,
-                size: 18, color: AppColors.textPrimary),
-          ),
-        ),
       ],
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(

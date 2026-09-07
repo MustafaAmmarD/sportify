@@ -151,8 +151,8 @@ class ScoutingFiltersCard extends ConsumerWidget {
               Slider(
                 value: filter.maxBudget,
                 min: 1,
-                max: 100,
-                divisions: 99,
+                max: 200,
+                divisions: 199,
                 activeColor: AppColors.accent,
                 inactiveColor: AppColors.surfaceLight,
                 onChanged: (value) {
